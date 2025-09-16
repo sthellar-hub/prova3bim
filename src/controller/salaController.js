@@ -9,8 +9,18 @@ const autenticador = getAuthentication();
 
 
 endpoints.post('/sala', autenticador, async (req, resp) => {
-    
+    let nome = req.body.nome;
+    let usuarioLogadoId = req.user.id;
+
+    let id = await salaRepo.inserirSala(nome, usuarioLogadoId);
+    resp.send({ novoId: id });
 });
+
+endpoints.get('/sala/:id', autenticador, async (req, resp) => {
+    let id = req.params.id;
+    let info = await salaRepo.buscarSalaPorId(id);
+    resp.send(info)
+})
 
 
 export default endpoints;
